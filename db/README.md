@@ -1,6 +1,7 @@
 To prepare the mint database:
 
- * Import your personal Mint data using the link at the bottom of the Transactions tab.
+ * Download your personal Mint data using the link at the bottom of the Transactions tab.
+     * The downloaded file is transactions.csv.
  * Run the import script run.sh
 
 That creates the mint database used by the React code.
