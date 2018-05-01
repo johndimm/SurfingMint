@@ -10,7 +10,7 @@ To run the React app, edit my.cnf to point to your database server.
 
     [client]
     host=localhost
-    user=accuscore
+    user=mint
     password=<pw>
 
     [mysql]
