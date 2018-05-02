@@ -23,7 +23,7 @@ If we set them aside, the rest will be clearer.   Because I’m interested in t
 
 Here’s a list of the Mint categories I had to set aside for my own data.  What I want here is just a None option in the dropdown, or a checkbox list of categories like the one for accounts.  If Mint had that feature, I would not have bothered to do this work. 
 
-But, I did, and here’s my experimental interface.  First, notice that it is restricted to discretionary spending.  That's whatever is left after removing the boring categories.  For this, month, you see most the big categories: groceries, shopping, clothing, and restaurants.  The fifth big category is usually Cash & ATM, but we got by without cash in April.  The big categories make up almost 3/4 of this spending. 
+But, I did, and here’s my experimental interface.  You can look at just discretionary spending, or just mandatory spending, or both.  In discretionary spending, for this month, you see most the big categories: groceries, shopping, clothing, and restaurants.  The fifth big category is usually Cash & ATM, but we got by without much cash in April.  The big categories make up almost 3/4 of this spending. 
 
 This interface lets you move easily from month to month.  You can use these buttons, or the arrow keys on your keyboard, to go next and previous.  Or you can jump to a random location using this timeline ribbon. 
 
