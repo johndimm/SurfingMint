@@ -1,3 +1,6 @@
+//
+// A bar in the vertical stacked barchart next to the pie chart.
+//
 var Bar = React.createClass({
   render: function() {
     var style = {"whiteSpace":"nowrap", "height": this.props.height + "px", "backgroundColor": this.props.color};
@@ -14,6 +17,9 @@ var Bar = React.createClass({
 })
 ;
 
+//
+// The set of all bars making up the stacked barchart.
+//
 var BarChart = React.createClass({
   render: function() {
     var bars = this.props.data.map(function(key, i) {
@@ -31,6 +37,9 @@ var BarChart = React.createClass({
 })
 ;
 
+//
+// A small ribbon below the pie chart that allows random access to quarters.
+//
 var Timeline = React.createClass({
   render: function() {
     var line = this.props.quarters.map(function(key,i) {
@@ -45,6 +54,10 @@ var Timeline = React.createClass({
   }
 })
 ;
+
+//
+// The detail report on the right.
+//
 var Detail = React.createClass({
   getInitialState: function() {
     return {data:[]};
@@ -79,7 +92,7 @@ var Detail = React.createClass({
     });
     return (
       <div>
-         <div>Discretionary spending by category over time</div>
+         <div>Spending by Category over Time</div>
          <div id="titleDiv">{this.props.quarter} -- {this.props.category}</div>
          <div id="jsGrid"></div>
       </div>
@@ -87,6 +100,9 @@ var Detail = React.createClass({
   }
 })
 
+//
+// The Discretionary Spending by Category and Time app.
+//
 var App = React.createClass({
 
   getInitialState: function() {
@@ -98,6 +114,9 @@ var App = React.createClass({
       quarter: '2018-02'};
   },
 
+  //
+  // On startup, get the list of quarters covered by this database.
+  //
   getQuarters: function() {
       $.ajax({
       url: "get.php",
@@ -128,11 +147,23 @@ var App = React.createClass({
 
   },
 
+  //
+  // Get the aggregate data for the pie chart and stacked barchart.
+  //
   getData: function(quarter) {
+      var mandatory = $("#mandatory").is(":checked");
+      var discretionary = $("#discretionary").is(":checked");
+
+      var proc = "get";
+      if (mandatory)
+        proc += "_mandatory"
+
+      if (discretionary)
+        proc += "_discretionary";
 
       $.ajax({
       url: "get.php",
-      data: {'proc':"get_agg", quarter: quarter},
+      data: {'proc':proc, quarter: quarter},
       dataType: 'text',
       cache: false,
       success: function(dataStr) {
@@ -145,7 +176,7 @@ var App = React.createClass({
             if (type == 'debit')
             chartData.push ({
               label: mint_quarter[i].category,
-              value: parseInt(mint_quarter[i].sumAmount),
+              value: parseInt(mint_quarter[i].Amount),
               color: mint_quarter[i].color
             });
        }
@@ -168,6 +199,10 @@ var App = React.createClass({
 
   },
 
+  //
+  // After you move to a different time span, this function opens the selected
+  // slice again.
+  //
   openPieSlice: function () {
         var selectedSliceIdx = -1;
         for (var i=0; i<this.state.chartData.length; i++) {
@@ -184,8 +219,8 @@ var App = React.createClass({
   },
 
   //
-// Keyboard input
-//
+  // Keyboard input
+  //
   onKeyDown: function (event) {
     this.pie.closeSegment();
     event.preventDefault();
@@ -225,8 +260,6 @@ var App = React.createClass({
 
   update: function() {
     this.pie.updateProp("data.content", this.state.chartData);
-  //  this.pie.updateProp("header.title.text", this.state.quarter);
-  //  setTimeout(this.openPieSlice, 0);
   },
 
   upCategory: function(direction) {
@@ -243,13 +276,16 @@ var App = React.createClass({
      if (i<0) {
        i = this.state.chartData.length + i;
      }
-     // var i = Math.min(this.state.chartData.length - 1, Math.max(0, catIdx + direction));
 
      var newCat = this.state.chartData[i].label;
      this.setState({category: newCat});
    }
 
    this.openPieSlice();
+  },
+
+  refresh: function() {
+    this.getData(this.state.quarter);
   },
 
   onClickPrev: function() {
@@ -304,6 +340,9 @@ var App = React.createClass({
             <button onClick={this.onClickPrev}>previous</button>
             <span>{this.state.quarter}</span>
             <button onClick={this.onClickNext}>next</button>
+            <br />
+            <input type="checkbox" defaultChecked="true" id="discretionary" onChange={this.refresh}/> discretionary
+            <input type="checkbox" id="mandatory" onChange={this.refresh}/> mandatory
         </div>
         <div id="barchartDiv">
           <BarChart data={this.state.chartData} category={this.state.category} />

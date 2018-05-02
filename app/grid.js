@@ -17,5 +17,5 @@
         ]
     });
 
-    $("#jsGrid").jsGrid("sort", { field: "Amount", order: "desc" });
+    $("#jsGrid").jsGrid("sort", { field: "Amount", order: "asc" });
 }
