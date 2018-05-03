@@ -4,7 +4,9 @@ This little project is an experimental reporting tool for Mint that is designed 
 
 Here's a video demo.
 
-[![Surfing Mint?](https://img.youtube.com/vi/Hq44CdZdyr4/0.jpg)](https://www.youtube.com/watch?v=Hq44CdZdyr4)
+https://youtu.be/_rF96zL7smE
+
+[![Surfing Mint?](https://img.youtube.com/vi/_rF96zL7smE/0.jpg)](https://www.youtube.com/watch?v=_rF96zL7smE)
 
 
 First, a bit of background.  I started using Mint in 2009 because it solves the update problem.  You give Mint all your account passwords, so yes it takes a lot of trust, but then you just forget about it.   It automatically downloads transactions from your bank and other accounts and aggregates them into a single database with no expiration date. 
