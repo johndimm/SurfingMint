@@ -1,6 +1,7 @@
 #
 # We bulk-loaded the transactions from Mint into a table of strings.
 # Convert to dates and numbers.
+# Remove unwanted accounts, but not mandatory categories.
 #
 drop temporary table if exists mint_in2;
 create temporary table mint_in2 as
@@ -13,23 +14,23 @@ select
   mint_incoming.Category,
   `Account Name`
   from mint_incoming
-
+  left join skip_account on skip_account.account = mint_incoming.`Account Name`
+  where skip_account.account is null
 #  left join skip_cat on skip_cat.category = mint_incoming.category
-#  left join skip_account on skip_account.account = mint_incoming.`Account Name`
 #  where skip_cat.category is null
-#  and skip_account.account is null
-
 ;
+
+select "CHASE COLLEGE?", m.*
+from mint_in2 as m
+where `Account Name` = 'CHASE COLLEGE';
 
 set @nTransactions = (select count(*) from mint_incoming);
 select @nTransactions as `Total incoming transactions`;
-
 
 #
 # Incoming table no longer needed.
 #
 drop table if exists mint_incoming;
-
 
 #
 # Create the base table for further analysis.
@@ -51,25 +52,10 @@ select
   from mint_in2
 ;
 
-
 create index idx_m1 on mint(Date);
 create index idx_m2 on mint(Category);
 create index idx_m3 on mint(quarter);
 create index idx_m4 on mint(type);
-
-
-#
-# Create table with overall quarterly debit and credit.
-#
-drop table if exists mint_top;
-create table mint_top as
-select
-  quarter,
-  mint.type,
-  round(sum(mint.Amount)) as Amount
-from mint
-group by quarter, type
-;
 
 #
 # This table has only the categories associated with activity.  Later, we will add null categories.
@@ -136,9 +122,6 @@ order by ca.quarter, ca.Amount
 ;
 
 
-/*
 drop table cat_all;
 drop table cat_used;
 drop table mint_quarter;
-drop table mint_top;
-*/

@@ -23,7 +23,7 @@ var Bar = React.createClass({
 var BarChart = React.createClass({
   render: function() {
     var bars = this.props.data.map(function(key, i) {
-      var height = key.value * 0.08;
+      var height = key.value * 0.07;
 
       return (
         <Bar key={i} height={height} category={key.label} color={key.color} selectedCategory={this.props.category}/>
@@ -154,12 +154,12 @@ var App = React.createClass({
       var mandatory = $("#mandatory").is(":checked");
       var discretionary = $("#discretionary").is(":checked");
 
-      var proc = "get";
+      var proc = "get_mandatory_discretionary";
       if (mandatory)
-        proc += "_mandatory"
+        proc = "get_mandatory"
 
       if (discretionary)
-        proc += "_discretionary";
+        proc = "get_discretionary";
 
       $.ajax({
       url: "get.php",
@@ -341,8 +341,10 @@ var App = React.createClass({
             <span>{this.state.quarter}</span>
             <button onClick={this.onClickNext}>next</button>
             <br />
-            <input type="checkbox" defaultChecked="true" id="discretionary" onChange={this.refresh}/> discretionary
-            <input type="checkbox" id="mandatory" onChange={this.refresh}/> mandatory
+            <input type="radio" name="scope" defaultChecked="true" id="discretionary" value="discretionary"
+              onChange={this.refresh}/> discretionary
+            <input type="radio" name="scope" id="mandatory" onChange={this.refresh}/> mandatory
+             <input type="radio" name="scope" id="both" onChange={this.refresh}/> both
         </div>
         <div id="barchartDiv">
           <BarChart data={this.state.chartData} category={this.state.category} />
